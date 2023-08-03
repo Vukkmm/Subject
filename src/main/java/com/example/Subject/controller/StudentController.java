@@ -8,36 +8,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/students")
+@RequestMapping("student")
 public class StudentController {
     @Autowired
     StudentService studentService;
-    @GetMapping
-    public ResponseEntity<?> findAll() {
+    @GetMapping("getAll")
+    public ResponseEntity<?> fillAll() {
         return ResponseEntity.ok().body(studentService.getAll());
     }
 
-    @PostMapping
+    @PostMapping("create")
     public ResponseEntity<Student> create(@RequestBody StudentRequest studentRequest) {
         Student student = studentService.create(studentRequest);
         return ResponseEntity.ok().body(student);
     }
-    @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable long id) {
+    @DeleteMapping("delete")
+    public ResponseEntity delete(@RequestParam("id") long id) {
         studentService.delete(id);
         return ResponseEntity.ok().body(null);
     }
-    @PostMapping("{id}")
-    public ResponseEntity<Student> update(@PathVariable long id, @RequestBody StudentRequest studentRequest) {
+    @PutMapping("update")
+    public ResponseEntity<Student> update(@RequestParam("id") long id, @RequestBody StudentRequest studentRequest) {
         Student student = studentService.update(id, studentRequest);
         return ResponseEntity.ok().body(student);
     }
-    @GetMapping("{id}")
-    public ResponseEntity<?> searchId(@PathVariable long id){
+    @GetMapping("searchSubjectById")
+    public ResponseEntity<?> searchId(@RequestParam("id") long id){
         return ResponseEntity.ok().body(studentService.searchSubject(id));
     }
-    @GetMapping("{name}")
-    public ResponseEntity<?> findSearchByName(@PathVariable String name) {
+    @GetMapping("searchByName")
+    public ResponseEntity<?> findSearchByName(@RequestParam("name") String name) {
         return ResponseEntity.ok().body(studentService.findSearchByName(name));
     }
 }

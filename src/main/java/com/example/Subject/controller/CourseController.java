@@ -8,33 +8,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/courses")
+@RequestMapping("course")
 public class CourseController {
     @Autowired
     CoursetService coursetService;
 
-    @PostMapping
+    @PostMapping("create")
     public ResponseEntity<Course> create(@RequestBody Course course) {
         Course course1 = coursetService.create(course);
         return ResponseEntity.ok().body(course1);
     }
-    @GetMapping
-    public ResponseEntity<?> findAll() {
+    @GetMapping("getAll")
+    public ResponseEntity<?> fillAll() {
 
         return ResponseEntity.ok().body(coursetService.getAll());
     }
-    @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    @DeleteMapping("delete")
+    public ResponseEntity<?> delete(@RequestParam("id") long id) {
         coursetService.delete(id);
         return ResponseEntity.ok().body(null);
     }
-    @PutMapping("{id}")
-    public ResponseEntity<?> update(@PathVariable long id,@RequestBody Course course) {
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam("id") long id,@RequestBody Course course) {
         Course course1 = coursetService.update(id,course);
         return ResponseEntity.ok().body(course1);
     }
-    @GetMapping("{id}")
-    public ResponseEntity<CourseResponse> studentSameSubject(@PathVariable long id) {
+    @GetMapping("studentSameSubject")
+    public ResponseEntity<CourseResponse> studentSameSubject(@RequestParam("id") long id) {
         CourseResponse courseResponse = coursetService.studentSameSubject(id);
         return  ResponseEntity.ok().body(courseResponse);
     }

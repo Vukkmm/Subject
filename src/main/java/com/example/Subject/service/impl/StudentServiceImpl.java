@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Service("api/v1/students")
+@Service("student")
 public class StudentServiceImpl  implements StudentService {
     @Autowired
     StudentRepository studentRepository;
@@ -31,17 +31,17 @@ public class StudentServiceImpl  implements StudentService {
     @Override
     public Student create(StudentRequest studentRequest) {
         Student student = new Student();
-        List<Course> courseList = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
         for (Long idCourse : studentRequest.getCourseIds()) {
             Course course = courseRepository.findById(idCourse).orElse(null);
             if (Objects.nonNull(course)) {
-                courseList.add(course);
+                courses.add(course);
             }
         }
         student.setName(studentRequest.getName());
         student.setPhoneNumber(studentRequest.getPhoneNumber());
         student.setAddress(studentRequest.getAddress());
-        student.setCourses(courseList);
+        student.setCourses(courses);
         studentRepository.save(student);
 
 
