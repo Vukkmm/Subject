@@ -1,4 +1,4 @@
-package com.example.Subject.dto.request;
+package com.example.Subject.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-
 @AllArgsConstructor
-public class CourseRequest {
+@NoArgsConstructor
+public class CourseResponse {
     private String nameCourse;
-    private List<Long> rakingIds;
+    private List<String> nameStudent;
+
 }

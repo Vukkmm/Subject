@@ -13,5 +13,5 @@ public class StudentRequest {
     private String name;
     private String phoneNumber;
     private String address;
-    private List<Long> courseIds;
+    private List<Long> rakingIds;
 }

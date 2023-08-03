@@ -18,9 +18,11 @@ public class Student {
     private String phoneNumber;
     private String address;
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
 
-
-    @OneToMany(mappedBy = "student")
-    //rong trường hợp này, nó chỉ ra rằng một sinh viên (Student) có nhiều bản đánh giá khóa học (CourseRating).
-    private List<CourseRating> ratings;
+    @JoinTable(name = "student_object",  joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private List<Course> courses;
 }

@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-
 @AllArgsConstructor
-public class CourseRequest {
-    private String nameCourse;
-    private List<Long> rakingIds;
+@NoArgsConstructor
+public class StudentRequest {
+    private String name;
+    private String phoneNumber;
+    private String address;
+    private List<Long> courseIds;
 }

@@ -9,18 +9,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "course")
+@Table(name = "courses")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-
-    private Long id;
+    @EmbeddedId
+    private Student_Course id;
     private String nameCourse;
 
-    @OneToMany(mappedBy = "course")
-    //rong trường hợp này, nó chỉ ra rằng một course có nhiều bản đánh giá khóa học (CourseRating).
-    private List<CourseRating> ratings;
-
-
+//        @ManyToMany(mappedBy = "courses")
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    private List<Student> students;
 }
