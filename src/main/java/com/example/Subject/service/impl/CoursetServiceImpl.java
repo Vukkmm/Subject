@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Service("course")
+@Service("api/v1/courses")
 public class CoursetServiceImpl implements CoursetService {
     @Autowired
     StudentRepository studentRepository;
@@ -59,14 +59,14 @@ public class CoursetServiceImpl implements CoursetService {
         if(Objects.nonNull(course)) {
             courseResponse.setNameCourse(course.getNameCourse());
         }
-        List<String> nameStudents = new ArrayList<>();
+        List<String> nameStudentList = new ArrayList<>();
         for (Long idStudent : courseRepository.searchStudent(id)) {
             Student student = studentRepository.findById(idStudent).orElse(null);
             if (Objects.nonNull(student)) {
-                nameStudents.add(student.getName());
+                nameStudentList.add(student.getName());
             }
         }
-        courseResponse.setNameStudent(nameStudents);;
+        courseResponse.setNameStudent(nameStudentList);;
 
         return courseResponse;
     }

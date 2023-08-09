@@ -2,40 +2,40 @@ package com.example.Subject.controller;
 
 import com.example.Subject.dto.response.CourseResponse;
 import com.example.Subject.entity.Course;
-import com.example.Subject.service.CourseService;
+import com.example.Subject.service.CoursetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/courses")
+@RequestMapping("course")
 public class CourseController {
-//    @Autowired
-//    CourseService courseService;
-//
-//    @PostMapping
-//    public ResponseEntity<Course> create(@RequestBody Course course) {
-//        Course course1 = courseService.create(course);
-//        return ResponseEntity.ok().body(course1);
-//    }
-//    @GetMapping
-//    public ResponseEntity<?> findAll() {
-//
-//        return ResponseEntity.ok().body(courseService.getAll());
-//    }
-//    @DeleteMapping("{id}")
-//    public ResponseEntity<?> delete(@PathVariable long id) {
-//        courseService.delete(id);
-//        return ResponseEntity.ok().body(null);
-//    }
-//    @PutMapping("{id}")
-//    public ResponseEntity<?> update(@PathVariable long id,@RequestBody Course course) {
-//        Course course1 = courseService.update(id,course);
-//        return ResponseEntity.ok().body(course1);
-//    }
-//    @GetMapping("{id}")
-//    public ResponseEntity<CourseResponse> studentSameSubject(@PathVariable long id) {
-//        CourseResponse courseResponse = courseService.studentSameSubject(id);
-//        return  ResponseEntity.ok().body(courseResponse);
-//    }
+    @Autowired
+    CoursetService coursetService;
+
+    @PostMapping("create")
+    public ResponseEntity<Course> create(@RequestBody Course course) {
+        Course course1 = coursetService.create(course);
+        return ResponseEntity.ok().body(course1);
+    }
+    @GetMapping("getAll")
+    public ResponseEntity<?> fillAll() {
+
+        return ResponseEntity.ok().body(coursetService.getAll());
+    }
+    @DeleteMapping("delete")
+    public ResponseEntity<?> delete(@RequestParam("id") long id) {
+        coursetService.delete(id);
+        return ResponseEntity.ok().body(null);
+    }
+    @PutMapping("update")
+    public ResponseEntity<?> update(@RequestParam("id") long id,@RequestBody Course course) {
+        Course course1 = coursetService.update(id,course);
+        return ResponseEntity.ok().body(course1);
+    }
+    @GetMapping("studentSameSubject")
+    public ResponseEntity<CourseResponse> studentSameSubject(@RequestParam("id") long id) {
+        CourseResponse courseResponse = coursetService.studentSameSubject(id);
+        return  ResponseEntity.ok().body(courseResponse);
+    }
 }
