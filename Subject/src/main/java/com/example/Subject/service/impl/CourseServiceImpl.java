@@ -14,8 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Service("api/v1/courses")
+@Service("api/courses")
 public class CourseServiceImpl implements CourseService {
+    @Autowired
+    CourseRepository courseRepository;
+    @Override
+    public Course createCourse(Course course) {
+        Course newCourse = courseRepository.save(course);
+        return newCourse;
+    }
+
+
+
 //    @Autowired
 //    StudentRepository studentRepository;
 //

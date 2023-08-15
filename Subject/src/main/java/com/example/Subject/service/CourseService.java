@@ -6,7 +6,7 @@ import com.example.Subject.entity.Course;
 import java.util.List;
 
 public interface CourseService {
-//    Course createCourse(Course course);
+   Course createCourse(Course course);
 //    List<Course> getAll();
 //
 //    void deleteCourse(long id);

@@ -20,7 +20,7 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     //rong trường hợp này, nó chỉ ra rằng một course có nhiều bản đánh giá khóa học (CourseRating).
-    private List<CourseRating> ratings;
+    private List<Student> studentList;
 
 
 }

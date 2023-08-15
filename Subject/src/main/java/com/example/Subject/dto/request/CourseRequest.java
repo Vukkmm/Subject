@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 
 @AllArgsConstructor
-public class CourseRequest {
+public class  CourseRequest {
     private String nameCourse;
-    private List<Long> rakingIds;
+    private List<Long> StudentIds;
 }

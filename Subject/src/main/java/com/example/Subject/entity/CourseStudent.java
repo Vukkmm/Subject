@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "courseRatings")
 @Data
-public class CourseRating {
+public class CourseStudent {
     @EmbeddedId
-    CourceRatingKey id;
+    CourseStudentKey id;
 
     @ManyToOne
     @MapsId("studentId")
