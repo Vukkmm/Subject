@@ -29,12 +29,12 @@ public class CourseController {
     public ResponseEntity<?> getAllStudent() {
         return ResponseEntity.ok().body(courseService.getAllCourse());
     }
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteStudent(@PathVariable long id) {
         courseService.deleteCourse(id);
         return ResponseEntity.ok().body(null);
     }
-    @PutMapping()
+    @PutMapping("/{id}")
     public ResponseEntity<Course> updateCourse(@PathVariable long id, @RequestBody CourseRequest courseRequest) {
         Course course = courseService.updateCourse(id, courseRequest);
         return ResponseEntity.ok().body(course);
