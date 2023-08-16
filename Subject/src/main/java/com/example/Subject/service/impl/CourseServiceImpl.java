@@ -1,6 +1,7 @@
 package com.example.Subject.service.impl;
 
 
+import com.example.Subject.dto.request.CourseRequest;
 import com.example.Subject.dto.response.CourseResponse;
 import com.example.Subject.entity.Course;
 import com.example.Subject.entity.Student;
@@ -18,25 +19,60 @@ import java.util.Objects;
 public class CourseServiceImpl implements CourseService {
     @Autowired
     CourseRepository courseRepository;
+
+    @Autowired
+    StudentRepository studentRepository;
+
     @Override
-    public Course createCourse(Course course) {
-        Course newCourse = courseRepository.save(course);
-        return newCourse;
+    public Course createCourse(CourseRequest courseRequest) {
+        Course course = new Course();
+        List<Student> studentList = new ArrayList<>();
+        for (Long id : courseRequest.getStudentIds()) {
+            Student student = studentRepository.findById(id).orElse(null);
+            if(Objects.nonNull(student)) {
+                studentList.add(student);
+            }
+        }
+        course.setNameCourse(courseRequest.getNameCourse());
+        course.setStudentList(studentList);
+        courseRepository.save(course);
+        return course;
+    }
+
+    @Override
+    public List<Course> getAllCourse() {
+        return courseRepository.findAll();
+    }
+
+    @Override
+    public void deleteCourse(long id) {
+        courseRepository.deleteCourse_id(id);
+        Course subject = courseRepository.findById(id).orElse(null);
+        if(Objects.nonNull(subject)) {
+            courseRepository.delete(subject);
+        }
+    }
+
+    @Override
+    public Course updateCourse(long id, CourseRequest courseRequest) {
+        Course course = courseRepository.findById(id).orElse(null);
+        if (Objects.nonNull(course)) {
+            courseRepository.deleteCourse_id(id);
+            course.setNameCourse(course.getNameCourse());
+            List<Student> studentList = new ArrayList<>();
+            for (Long ids : courseRequest.getStudentIds()) {
+                Student student = studentRepository.findById(ids).orElse(null);
+                if(Objects.nonNull(student)) {
+                    studentList.add(student);
+                }
+            }
+            course.setStudentList(studentList);
+        }
+        courseRepository.save(course);
+        return course;
     }
 
 
-
-//    @Autowired
-//    StudentRepository studentRepository;
-//
-//    @Autowired
-//    CourseRepository courseRepository;
-//
-//    @Override
-//    public Course createCourse(Course course) {
-//        courseRepository.save(course);
-//        return course;
-//    }
 //
 //    @Override
 //    public List<Course> getAll() {

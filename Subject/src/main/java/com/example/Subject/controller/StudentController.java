@@ -10,23 +10,50 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
-
     @Autowired
     StudentService studentService;
 
-    @PostMapping("/api/student/create")
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        Student newStudent = studentService.createStudent(student);
-        return ResponseEntity.ok().body(newStudent);
+    @PostMapping("/create")
+    public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
+        Student student = studentService.createStudent(studentRequest);
+        return ResponseEntity.ok().body(student);
+
     }
+    @GetMapping("/getAllStudent")
+    public ResponseEntity<?> getAllStudent() {
+        return ResponseEntity.ok().body(studentService.getAllStudent());
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteStudent(@PathVariable long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().body(null);
+    }
+    @PutMapping("{id}")
+    public ResponseEntity<Student> updateStudent(@PathVariable long id, @RequestBody StudentRequest studentRequest) {
+        Student student = studentService.updateStudent(id, studentRequest);
+        return ResponseEntity.ok().body(student);
+    }
+
+
+
 
 }
 
-
-
-
 //    @Autowired
 //    StudentService studentService;
+//
+//    @PostMapping("/api/student/create")
+//    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+//        Student newStudent = studentService.createStudent(student);
+//        return ResponseEntity.ok().body(newStudent);
+//    }
+//
+//}
+
+
+
+
 //    @GetMapping("getAll")
 //    public ResponseEntity<?> fillAll() {
 //        return ResponseEntity.ok().body(studentService.getAll());

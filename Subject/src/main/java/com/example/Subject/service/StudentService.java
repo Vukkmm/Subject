@@ -9,13 +9,15 @@ import java.util.List;
 
 public interface StudentService {
 
-    Student createStudent (Student student);
-//    List<Student> getAll();
+    Student createStudent (StudentRequest studentRequest);
+    List<Student> getAllStudent();
 
-//
-//    void deleteUser(long id);
-//
-//    Student updateUser(long id, StudentRequest studentRequest);
+
+
+
+    void deleteStudent(long id);
+
+    Student updateStudent(long id, StudentRequest studentRequest);
 //
 //    Student createStudent(StudentRequest studentRequest);
 //

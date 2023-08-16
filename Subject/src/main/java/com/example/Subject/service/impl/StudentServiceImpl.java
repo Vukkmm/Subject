@@ -1,10 +1,10 @@
 package com.example.Subject.service.impl;
 
 import com.example.Subject.dto.request.StudentRequest;
-import com.example.Subject.entity.CourseStudent;
+import com.example.Subject.entity.Course;
 import com.example.Subject.entity.Student;
 import com.example.Subject.repository.CourseRepository;
-import com.example.Subject.repository.CourseStudentRepository;
+
 import com.example.Subject.repository.StudentRepository;
 import com.example.Subject.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +21,68 @@ public class StudentServiceImpl  implements StudentService {
     StudentRepository studentRepository;
 
     @Autowired
-    CourseStudentRepository courseStudentRepository;
-
-    @Autowired
     CourseRepository courseRepository;
 
     @Override
-    public Student createStudent(Student student) {
-        Student newStudent = studentRepository.save(student);
-        return newStudent;
+    public Student createStudent(StudentRequest studentRequest) {
+        Student student = new Student();
+        List<Course> courses = new ArrayList<>();
+        for (Long id : studentRequest.getCourseIds()) {
+            Course course = courseRepository.findById(id).orElse(null);
+            if (Objects.nonNull(course)) {
+                courses.add(course);
+            }
+        }
+        student.setName(studentRequest.getName());
+        student.setPhoneNumber(studentRequest.getPhoneNumber());
+        student.setAddress(studentRequest.getAddress());
+        student.setCourseList(courses);
+        studentRepository.save(student);
+        return student;
     }
-//    @Autowired
-//    StudentRepository studentRepository;
-//
-//    @Autowired
-//    CourseStudentRepository courseRakingRepository;
-//
+
+    @Override
+    public List<Student> getAllStudent() {
+        return  studentRepository.findAll();
+    }
+
+    @Override
+    public void deleteStudent(long id) {
+        Student student = studentRepository.findById(id).orElse(null);
+        if (Objects.nonNull(student)) {
+            studentRepository.deletestudent_course(id);
+            studentRepository.delete(student);
+        }
+    }
+
+    @Override
+    public Student updateStudent(long id, StudentRequest studentRequest) {
+        Student student = studentRepository.findById(id).orElse(null);
+        if (Objects.nonNull(student)) {
+            studentRepository.deletestudent_course(id);
+            student.setName(studentRequest.getName());
+            student.setPhoneNumber(studentRequest.getPhoneNumber());
+            student.setAddress(studentRequest.getAddress());
+            List<Course> courseList = new ArrayList<>();
+            for (Long ids : studentRequest.getCourseIds()) {
+                Course course = courseRepository.findById(ids).orElse(null);
+                if (Objects.nonNull(course)) {
+                    courseList.add(course);
+                }
+            }
+            student.setCourseList(courseList);
+
+        }
+        studentRepository.save(student);
+        return student;
+    }
+
+
+//    @Override
+//    public Student createStudent(Student student) {
+//        Student newStudent = studentRepository.save(student);
+//        return newStudent;
+//    }
 
 
 //    @Override

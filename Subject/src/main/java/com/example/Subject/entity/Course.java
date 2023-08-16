@@ -18,8 +18,7 @@ public class Course {
     private Long id;
     private String nameCourse;
 
-    @OneToMany(mappedBy = "course")
-    //rong trường hợp này, nó chỉ ra rằng một course có nhiều bản đánh giá khóa học (CourseRating).
+    @ManyToMany(mappedBy = "courseList")
     private List<Student> studentList;
 
 

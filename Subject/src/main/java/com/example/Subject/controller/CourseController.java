@@ -1,5 +1,7 @@
 package com.example.Subject.controller;
 
+import com.example.Subject.dto.request.CourseRequest;
+import com.example.Subject.dto.request.StudentRequest;
 import com.example.Subject.dto.response.CourseResponse;
 import com.example.Subject.entity.Course;
 
@@ -16,17 +18,28 @@ public class CourseController {
    @Autowired
     CourseService courseService;
 
-    @PostMapping("/api/course/create")
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-        Course newCourse = courseService.createCourse(course);
-        return ResponseEntity.ok().body(newCourse);
+
+
+    @PostMapping("create")
+    public ResponseEntity<Course> createCourse(@RequestBody CourseRequest courseRequest) {
+        Course course = courseService.createCourse(courseRequest);
+        return ResponseEntity.ok().body(course);
     }
-//
-//    @PostMapping("create")
-//    public ResponseEntity<Course> create(@RequestBody Course course) {
-//        Course course1 = coursetService.create(course);
-//        return ResponseEntity.ok().body(course1);
-//    }
+    @GetMapping("/getAllCourse")
+    public ResponseEntity<?> getAllStudent() {
+        return ResponseEntity.ok().body(courseService.getAllCourse());
+    }
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteStudent(@PathVariable long id) {
+        courseService.deleteCourse(id);
+        return ResponseEntity.ok().body(null);
+    }
+    @PutMapping()
+    public ResponseEntity<Course> updateCourse(@PathVariable long id, @RequestBody CourseRequest courseRequest) {
+        Course course = courseService.updateCourse(id, courseRequest);
+        return ResponseEntity.ok().body(course);
+    }
+
 //    @GetMapping("getAll")
 //    public ResponseEntity<?> fillAll() {
 //

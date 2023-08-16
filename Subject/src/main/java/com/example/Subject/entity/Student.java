@@ -20,7 +20,11 @@ public class Student {
 
 
 
-    @OneToMany(mappedBy = "student")
-    //rong trường hợp này, nó chỉ ra rằng một sinh viên (Student) có nhiều bản đánh giá khóa học (CourseRating).
-    private List<CourseStudent> ratings;
+    @ManyToMany
+    @JoinTable(
+            name="CourseStudent",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courseList;
 }
