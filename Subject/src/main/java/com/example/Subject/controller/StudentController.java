@@ -1,6 +1,7 @@
 package com.example.Subject.controller;
 
 import com.example.Subject.dto.request.StudentRequest;
+import com.example.Subject.dto.response.StudentResponse;
 import com.example.Subject.entity.Student;
 import com.example.Subject.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,34 +9,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/student")
+@RequestMapping("/api/v1/students")
 public class StudentController {
     @Autowired
     StudentService studentService;
 
     @PostMapping("/create")
-    public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
-        Student student = studentService.createStudent(studentRequest);
-        return ResponseEntity.ok().body(student);
-
+    public ResponseEntity<StudentResponse> create(@RequestBody StudentRequest studentRequest) {
+        StudentResponse studentResponse = studentService.create(studentRequest);
+        return ResponseEntity.ok().body(studentResponse);
     }
+
     @GetMapping("/getAllStudent")
-    public ResponseEntity<?> getAllStudent() {
-        return ResponseEntity.ok().body(studentService.getAllStudent());
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok().body(studentService.getAll());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteStudent(@PathVariable long id) {
-        studentService.deleteStudent(id);
+    public ResponseEntity<?> delete(@PathVariable long id) {
+        studentService.delete(id);
         return ResponseEntity.ok().body(null);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable long id, @RequestBody StudentRequest studentRequest) {
-        Student student = studentService.updateStudent(id, studentRequest);
-        return ResponseEntity.ok().body(student);
+    public ResponseEntity<StudentResponse> update(@PathVariable long id, @RequestBody StudentRequest studentRequest) {
+        StudentResponse studentResponse = studentService.update(id, studentRequest);
+        return ResponseEntity.ok().body(studentResponse);
     }
-
-
 
 
 }
@@ -50,8 +50,6 @@ public class StudentController {
 //    }
 //
 //}
-
-
 
 
 //    @GetMapping("getAll")

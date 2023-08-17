@@ -19,10 +19,9 @@ public class Student {
     private String address;
 
 
-
     @ManyToMany
     @JoinTable(
-            name="CourseStudent",
+            name = "CourseStudent",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )

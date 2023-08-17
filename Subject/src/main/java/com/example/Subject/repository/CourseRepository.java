@@ -14,7 +14,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Transactional
     @Modifying
     @Query(value = "Delete from course_student WHERE course_id = ?1", nativeQuery = true)
-    void deleteCourse_id(Long courseId);
+    void deleteCourse(Long courseId);
 
 //    @Query(value = "SELECT student_id FROM student_object WHERE course_id = ?1", nativeQuery = true)
 //    List<Long> searchStudent(Long id);

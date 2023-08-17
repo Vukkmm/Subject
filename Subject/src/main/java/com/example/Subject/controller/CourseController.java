@@ -12,31 +12,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/course")
+@RequestMapping("/api/v1/courses")
 public class CourseController {
 
-   @Autowired
+    @Autowired
     CourseService courseService;
 
 
-
     @PostMapping("create")
-    public ResponseEntity<Course> createCourse(@RequestBody CourseRequest courseRequest) {
-        Course course = courseService.createCourse(courseRequest);
-        return ResponseEntity.ok().body(course);
+    public ResponseEntity<CourseResponse> create(@RequestBody CourseRequest courseRequest) {
+        CourseResponse courseResponse = courseService.create(courseRequest);
+        return ResponseEntity.ok().body(courseResponse);
     }
+
     @GetMapping("/getAllCourse")
-    public ResponseEntity<?> getAllStudent() {
-        return ResponseEntity.ok().body(courseService.getAllCourse());
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok().body(courseService.getAll());
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteStudent(@PathVariable long id) {
-        courseService.deleteCourse(id);
+    public ResponseEntity delete(@PathVariable long id) {
+        courseService.delete(id);
         return ResponseEntity.ok().body(null);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Course> updateCourse(@PathVariable long id, @RequestBody CourseRequest courseRequest) {
-        Course course = courseService.updateCourse(id, courseRequest);
+    public ResponseEntity<Course> update(@PathVariable long id, @RequestBody CourseRequest courseRequest) {
+        Course course = courseService.update(id, courseRequest);
         return ResponseEntity.ok().body(course);
     }
 

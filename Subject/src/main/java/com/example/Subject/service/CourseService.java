@@ -7,11 +7,13 @@ import com.example.Subject.entity.Course;
 import java.util.List;
 
 public interface CourseService {
-    Course createCourse(CourseRequest courseRequest);
-    List<Course> getAllCourse();
+    CourseResponse create(CourseRequest courseRequest);
 
-    void deleteCourse(long id);
-    Course updateCourse(long id, CourseRequest courseRequest);
+    List<CourseResponse> getAll();
+
+    void delete(long id);
+
+    Course update(long id, CourseRequest courseRequest);
 //
 //    CourseResponse studentSameSubject(long id);
 

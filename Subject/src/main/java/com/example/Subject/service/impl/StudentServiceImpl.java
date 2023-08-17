@@ -1,6 +1,7 @@
 package com.example.Subject.service.impl;
 
 import com.example.Subject.dto.request.StudentRequest;
+import com.example.Subject.dto.response.StudentResponse;
 import com.example.Subject.entity.Course;
 import com.example.Subject.entity.Student;
 import com.example.Subject.repository.CourseRepository;
@@ -14,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Service("api/student")
-public class StudentServiceImpl  implements StudentService {
+@Service
+public class StudentServiceImpl implements StudentService {
 
     @Autowired
     StudentRepository studentRepository;
@@ -24,8 +25,9 @@ public class StudentServiceImpl  implements StudentService {
     CourseRepository courseRepository;
 
     @Override
-    public Student createStudent(StudentRequest studentRequest) {
+    public StudentResponse create(StudentRequest studentRequest) {
         Student student = new Student();
+
         List<Course> courses = new ArrayList<>();
         for (Long id : studentRequest.getCourseIds()) {
             Course course = courseRepository.findById(id).orElse(null);
@@ -38,28 +40,51 @@ public class StudentServiceImpl  implements StudentService {
         student.setAddress(studentRequest.getAddress());
         student.setCourseList(courses);
         studentRepository.save(student);
-        return student;
+
+        StudentResponse studentResponse = new StudentResponse();
+        studentResponse.setId(student.getId());
+        studentResponse.setNameStudent(student.getName());
+        List<String> courseNames = new ArrayList<>();
+        for (Course course : courses) {
+            courseNames.add(course.getNameCourse());
+        }
+        studentResponse.setNameCourses(courseNames);
+
+        return studentResponse;
     }
 
     @Override
-    public List<Student> getAllStudent() {
-        return  studentRepository.findAll();
+    public List<StudentResponse> getAll() {
+        List<Student> studentList = studentRepository.findAll();
+        StudentResponse studentResponse = new StudentResponse();
+        List<StudentResponse> studentResponses = new ArrayList<>();
+        for (Student student : studentList) {
+            studentResponse.setId(student.getId());
+            studentResponse.setNameStudent(student.getName());
+            List<String> courseNames = new ArrayList<>();
+            for (Course course : student.getCourseList()) {
+                courseNames.add(course.getNameCourse());
+            }
+            studentResponse.setNameCourses(courseNames);
+            studentResponses.add(studentResponse);
+        }
+        return studentResponses;
     }
 
     @Override
-    public void deleteStudent(long id) {
+    public void delete(long id) {
         Student student = studentRepository.findById(id).orElse(null);
         if (Objects.nonNull(student)) {
-            studentRepository.deletestudent_course(id);
+            studentRepository.deleteStudent(id);
             studentRepository.delete(student);
         }
     }
 
     @Override
-    public Student updateStudent(long id, StudentRequest studentRequest) {
+    public StudentResponse update(long id, StudentRequest studentRequest) {
         Student student = studentRepository.findById(id).orElse(null);
         if (Objects.nonNull(student)) {
-            studentRepository.deletestudent_course(id);
+            studentRepository.deleteStudent(id);
             student.setName(studentRequest.getName());
             student.setPhoneNumber(studentRequest.getPhoneNumber());
             student.setAddress(studentRequest.getAddress());
@@ -72,9 +97,18 @@ public class StudentServiceImpl  implements StudentService {
             }
             student.setCourseList(courseList);
 
+            StudentResponse studentResponse = new StudentResponse();
+            studentResponse.setId(id);
+            studentResponse.setNameStudent(student.getName());
+            List<String> courseNames = new ArrayList<>();
+            for (Course course : courseList) {
+                courseNames.add(course.getNameCourse());
+            }
+            studentResponse.setNameCourses(courseNames);
+            studentRepository.save(student);
         }
-        studentRepository.save(student);
-        return student;
+        //studentRepository.save(student);
+        return studentResponse();
     }
 
 
@@ -89,7 +123,6 @@ public class StudentServiceImpl  implements StudentService {
 //    public List<Student> getAll() {
 //        return studentRepository.findAll();
 //    }
-
 
 
 //    @Override
