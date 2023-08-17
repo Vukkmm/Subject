@@ -75,7 +75,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course update(long id, CourseRequest courseRequest) {
+    public CourseResponse update(long id, CourseRequest courseRequest) {
         Course course = courseRepository.findById(id).orElse(null);
         if (Objects.nonNull(course)) {
             courseRepository.deleteCourse(id);
@@ -89,8 +89,15 @@ public class CourseServiceImpl implements CourseService {
             }
             course.setStudentList(studentList);
         }
+        CourseResponse courseResponse = new CourseResponse();
+        courseResponse.setNameCourse(courseRequest.getNameCourse());
+        List<String> nameStudents = new ArrayList<>();
+        for (Student student : course.getStudentList()) {
+            nameStudents.add(student.getName());
+        }
+        courseResponse.setNameStudent(nameStudents);
         courseRepository.save(course);
-        return course;
+        return courseResponse;
     }
 
 

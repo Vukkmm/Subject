@@ -96,19 +96,17 @@ public class StudentServiceImpl implements StudentService {
                 }
             }
             student.setCourseList(courseList);
-
-            StudentResponse studentResponse = new StudentResponse();
-            studentResponse.setId(id);
-            studentResponse.setNameStudent(student.getName());
-            List<String> courseNames = new ArrayList<>();
-            for (Course course : courseList) {
-                courseNames.add(course.getNameCourse());
-            }
-            studentResponse.setNameCourses(courseNames);
-            studentRepository.save(student);
         }
-        //studentRepository.save(student);
-        return studentResponse();
+        StudentResponse studentResponse = new StudentResponse();
+        studentResponse.setId(id);
+        studentResponse.setNameStudent(student.getName());
+        List<String> courseNames = new ArrayList<>();
+        for (Course course : student.getCourseList()) {
+            courseNames.add(course.getNameCourse());
+        }
+        studentResponse.setNameCourses(courseNames);
+        studentRepository.save(student);
+        return studentResponse;
     }
 
 

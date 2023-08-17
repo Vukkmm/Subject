@@ -13,7 +13,7 @@ public interface CourseService {
 
     void delete(long id);
 
-    Course update(long id, CourseRequest courseRequest);
+    CourseResponse update(long id, CourseRequest courseRequest);
 //
 //    CourseResponse studentSameSubject(long id);
 
