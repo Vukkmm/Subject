@@ -3,12 +3,14 @@ package com.example.Subject.service.impl;
 
 import com.example.Subject.dto.request.CourseRequest;
 import com.example.Subject.dto.response.CourseResponse;
+import com.example.Subject.dto.response.StudentInfoResponse;
 import com.example.Subject.dto.response.StudentResponse;
 import com.example.Subject.entity.Course;
 import com.example.Subject.entity.Student;
 import com.example.Subject.repository.CourseRepository;
 import com.example.Subject.repository.StudentRepository;
 import com.example.Subject.service.CourseService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     StudentRepository studentRepository;
+
+    private StudentInfoResponse createStudentInfoResponse(Student student) {
+        StudentInfoResponse studentInfoResponse = new StudentInfoResponse();
+        studentInfoResponse.setId(student.getId());
+        studentInfoResponse.setStudentNames(student.getName());
+        return studentInfoResponse;
+    }
 
     @Override
     public CourseResponse create(CourseRequest courseRequest) {
@@ -39,39 +48,43 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.save(course);
 
         CourseResponse courseResponse = new CourseResponse();
-        courseResponse.setNameCourse(courseRequest.getNameCourse());
-        List<String> nameStudents = new ArrayList<>();
+        List<StudentInfoResponse> studentInfoResponseList = new ArrayList<>();
         for (Student student : studentList) {
-            nameStudents.add(student.getName());
+            studentInfoResponseList.add(createStudentInfoResponse(student));
         }
-        courseResponse.setNameStudent(nameStudents);
+        courseResponse.setCourseName(courseRequest.getNameCourse());
+        courseResponse.setStudentInfoResponses(studentInfoResponseList);
         return courseResponse;
     }
 
     @Override
     public List<CourseResponse> getAll() {
+        List<CourseResponse> courseResponseList = new ArrayList<>();
         List<Course> courseList = courseRepository.findAll();
         CourseResponse courseResponse = new CourseResponse();
         List<CourseResponse> courseResponses = new ArrayList<>();
+
+        List<StudentInfoResponse> studentInfoResponseList = new ArrayList<>();
         for (Course course : courseList) {
-            courseResponse.setNameCourse(course.getNameCourse());
-            List<String>  nameStudents = new ArrayList<>();
             for (Student student : course.getStudentList()) {
-                nameStudents.add(student.getName());
+                studentInfoResponseList.add(createStudentInfoResponse(student));
             }
-            courseResponse.setNameStudent(nameStudents);
-            courseResponses.add(courseResponse);
+            courseResponse.setCourseName(course.getNameCourse());
+            courseResponse.setStudentInfoResponses(studentInfoResponseList);
+            courseResponseList.add(courseResponse);
         }
-        return courseResponses;
+        return courseResponseList;
     }
 
     @Override
-    public void delete(long id) {
+    public Boolean delete(long id) {
         courseRepository.deleteCourse(id);
         Course subject = courseRepository.findById(id).orElse(null);
         if (Objects.nonNull(subject)) {
             courseRepository.delete(subject);
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -88,61 +101,21 @@ public class CourseServiceImpl implements CourseService {
                 }
             }
             course.setStudentList(studentList);
+
+            CourseResponse courseResponse = new CourseResponse();
+            List<StudentInfoResponse> studentInfoResponseList = new ArrayList<>();
+            for (Student student : studentList) {
+                studentInfoResponseList.add(createStudentInfoResponse(student));
+            }
+            courseResponse.setCourseName(courseRequest.getNameCourse());
+            courseResponse.setStudentInfoResponses(studentInfoResponseList);
+            return courseResponse;
+        } else {
+            throw new EntityNotFoundException("Course with id " + id + " not found");
         }
-        CourseResponse courseResponse = new CourseResponse();
-        courseResponse.setNameCourse(courseRequest.getNameCourse());
-        List<String> nameStudents = new ArrayList<>();
-        for (Student student : course.getStudentList()) {
-            nameStudents.add(student.getName());
-        }
-        courseResponse.setNameStudent(nameStudents);
-        courseRepository.save(course);
-        return courseResponse;
+
     }
 
 
-//
-//    @Override
-//    public List<Course> getAll() {
-//        return courseRepository.findAll();
-//    }
-//
-//    @Override
-//    public void deleteCourse(long id) {
-//        courseRepository.deleteCourse_id(id);
-//        Course subject = courseRepository.findById(id).orElse(null);
-//        if(Objects.nonNull(subject)) {
-//            courseRepository.delete(subject);
-//        }
-//    }
-//
-//    @Override
-//    public Course updateCourse(long id, Course course) {
-//        Course course1 = courseRepository.findById(id).orElse(null);
-//        if (Objects.nonNull(course1)) {
-//            course1.setNameCourse(course.getNameCourse());
-//        }
-//        courseRepository.save(course1);
-//        return course1;
-//    }
-//
-//    @Override
-//    public CourseResponse studentSameSubject(long id) {
-//        CourseResponse courseResponse = new CourseResponse();
-//        Course course = courseRepository.findById(id).orElse(null);
-//        if(Objects.nonNull(course)) {
-//            courseResponse.setNameCourse(course.getNameCourse());
-//        }
-//        List<String> nameStudentList = new ArrayList<>();
-//        for (Long idStudent : courseRepository.searchStudent(id)) {
-//            Student student = studentRepository.findById(idStudent).orElse(null);
-//            if (Objects.nonNull(student)) {
-//                nameStudentList.add(student.getName());
-//            }
-//        }
-//        courseResponse.setNameStudent(nameStudentList);;
-//
-//        return courseResponse;
-//    }
 
 }

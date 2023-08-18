@@ -4,9 +4,13 @@ import com.example.Subject.dto.request.StudentRequest;
 import com.example.Subject.dto.response.StudentResponse;
 import com.example.Subject.entity.Student;
 import com.example.Subject.service.StudentService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/students")
@@ -20,64 +24,26 @@ public class StudentController {
         return ResponseEntity.ok().body(studentResponse);
     }
 
-    @GetMapping("/getAllStudent")
-    public ResponseEntity<?> getAll() {
+    @GetMapping("/getAll")
+    public ResponseEntity<List<StudentResponse>> getAll() {
         return ResponseEntity.ok().body(studentService.getAll());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    @DeleteMapping("{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable long id) {
         studentService.delete(id);
         return ResponseEntity.ok().body(null);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<StudentResponse> update(@PathVariable long id, @RequestBody StudentRequest studentRequest) {
-        StudentResponse studentResponse = studentService.update(id, studentRequest);
-        return ResponseEntity.ok().body(studentResponse);
+    @PutMapping("{id}")
+    public ResponseEntity<?> update(@PathVariable long id, @RequestBody StudentRequest studentRequest) {
+       try {
+           StudentResponse studentResponse = studentService.update(id, studentRequest);
+           return ResponseEntity.ok().body(studentResponse);
+       } catch (EntityNotFoundException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy khóa học với id: " + id);
+        }
     }
-
-
 }
 
-//    @Autowired
-//    StudentService studentService;
-//
-//    @PostMapping("/api/student/create")
-//    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-//        Student newStudent = studentService.createStudent(student);
-//        return ResponseEntity.ok().body(newStudent);
-//    }
-//
-//}
-
-
-//    @GetMapping("getAll")
-//    public ResponseEntity<?> fillAll() {
-//        return ResponseEntity.ok().body(studentService.getAll());
-//    }
-
-//    @PostMapping("createStudent")
-//    public ResponseEntity<Student> create(@RequestBody StudentRequest studentRequest) {
-//        Student student = studentService.create(studentRequest);
-//        return ResponseEntity.ok().body(student);
-//    }
-//    @DeleteMapping("delete")
-//    public ResponseEntity delete(@RequestParam("id") long id) {
-//        studentService.delete(id);
-//        return ResponseEntity.ok().body(null);
-//    }
-//    @PutMapping("{id}")
-//    public ResponseEntity<Student> update(@PathVariable long id, @RequestBody StudentRequest studentRequest) {
-//        Student student = studentService.update(id, studentRequest);
-//        return ResponseEntity.ok().body(student);
-//    }
-//    @GetMapping("searchSubjectById")
-//    public ResponseEntity<?> searchId(@RequestParam("id") long id){
-//        return ResponseEntity.ok().body(studentService.searchSubject(id));
-//    }
-//    @GetMapping("searchByName")
-//    public ResponseEntity<?> findSearchByName(@RequestParam("name") String name) {
-//        return ResponseEntity.ok().body(studentService.findSearchByName(name));
-//    }
 

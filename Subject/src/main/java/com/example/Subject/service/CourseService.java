@@ -11,10 +11,10 @@ public interface CourseService {
 
     List<CourseResponse> getAll();
 
-    void delete(long id);
+   Boolean delete(long id);
 
     CourseResponse update(long id, CourseRequest courseRequest);
-//
+
 //    CourseResponse studentSameSubject(long id);
 
 
