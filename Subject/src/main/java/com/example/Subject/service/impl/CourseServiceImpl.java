@@ -12,6 +12,7 @@ import com.example.Subject.repository.StudentRepository;
 import com.example.Subject.service.CourseService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class CourseServiceImpl implements CourseService {
             studentInfoResponseList.add(createStudentInfoResponse(student));
         }
         courseResponse.setCourseName(courseRequest.getNameCourse());
-        courseResponse.setStudentInfoResponses(studentInfoResponseList);
+        courseResponse.setStudentInfos(studentInfoResponseList);
         return courseResponse;
     }
 
@@ -70,7 +71,7 @@ public class CourseServiceImpl implements CourseService {
                 studentInfoResponseList.add(createStudentInfoResponse(student));
             }
             courseResponse.setCourseName(course.getNameCourse());
-            courseResponse.setStudentInfoResponses(studentInfoResponseList);
+            courseResponse.setStudentInfos(studentInfoResponseList);
             courseResponseList.add(courseResponse);
         }
         return courseResponseList;
@@ -108,7 +109,7 @@ public class CourseServiceImpl implements CourseService {
                 studentInfoResponseList.add(createStudentInfoResponse(student));
             }
             courseResponse.setCourseName(courseRequest.getNameCourse());
-            courseResponse.setStudentInfoResponses(studentInfoResponseList);
+            courseResponse.setStudentInfos(studentInfoResponseList);
             return courseResponse;
         } else {
             throw new EntityNotFoundException("Course with id " + id + " not found");

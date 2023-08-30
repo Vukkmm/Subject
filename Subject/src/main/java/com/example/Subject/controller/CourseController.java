@@ -26,7 +26,7 @@ public class CourseController {
         return ResponseEntity.ok().body(courseResponse);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<List<CourseResponse>> getAll() {
         return ResponseEntity.ok().body(courseService.getAll());
     }
