@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseResponse {
-    private String courseName;
-    private List<StudentInfoResponse> studentInfos;
+public class StudentInfoResponse {
+    private Long id;
+    private String studentNames;
 }

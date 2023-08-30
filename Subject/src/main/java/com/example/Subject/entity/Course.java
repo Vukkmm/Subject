@@ -14,12 +14,12 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @EmbeddedId
-    private Student_Course id;
+
+    private Long id;
     private String nameCourse;
 
-//        @ManyToMany(mappedBy = "courses")
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    private List<Student> students;
+    @ManyToMany(mappedBy = "courseList")
+    private List<Student> studentList;
+
+
 }

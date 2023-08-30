@@ -18,11 +18,12 @@ public class Student {
     private String phoneNumber;
     private String address;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
 
-    @JoinTable(name = "student_object",  joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id"))
-    private List<Course> courses;
+    @ManyToMany
+    @JoinTable(
+            name = "CourseStudent",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courseList;
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentResponse {
-    private Long idStudent;
+    private Long id;
     private String nameStudent;
-    private List<String> nameCourse;
+    private List<String> nameCourses;
 }
