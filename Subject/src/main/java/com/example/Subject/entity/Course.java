@@ -1,6 +1,5 @@
 package com.example.Subject.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Course {
-    private Long id;
+    private int id;
     private String nameCourse;
 //  private List<Student> studentList;
 

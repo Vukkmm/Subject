@@ -29,11 +29,11 @@ public class HikariConfiguration {
         hikariConfig.setPoolName("pool");
         hikariConfig.setMaximumPoolSize(10);
         hikariConfig.setConnectionTimeout(20000);
-        hikariDataSource = new HikariDataSource(hikariConfig);
+        hds = new HikariDataSource(hikariConfig);
     }
-    private static HikariDataSource hikariDataSource;
+    private static HikariDataSource hds;
     public Connection getConnection() throws SQLException {
-        return hikariDataSource.getConnection();
+        return hds.getConnection();
     }
 
 

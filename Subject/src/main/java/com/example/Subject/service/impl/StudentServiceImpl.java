@@ -1,69 +1,70 @@
-//package com.example.Subject.service.impl;
-//
-//import com.example.Subject.dto.request.StudentRequest;
-//import com.example.Subject.dto.response.StudentResponse;
-//import com.example.Subject.entity.Course;
-//import com.example.Subject.entity.Student;
-//import com.example.Subject.repository.CourseRepository;
-//
-//import com.example.Subject.repository.StudentRepository;
-//import com.example.Subject.service.StudentService;
-//import jakarta.persistence.EntityNotFoundException;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Objects;
-//
-//@Service
-//public class StudentServiceImpl implements StudentService {
+package com.example.Subject.service.impl;
 
-//    @Autowired
-//    StudentRepository studentRepository;
-//
-//    @Autowired
-//    CourseRepository courseRepository;
-//
-//    private Student createStudentFromRequest(StudentRequest studentRequest) {
-//        Student student = new Student();
-//        student.setName(studentRequest.getName());
-//        student.setPhoneNumber(studentRequest.getPhoneNumber());
-//        student.setAddress(studentRequest.getAddress());
-//        return studentRepository.save(student);
-//    }
-//
-//    private List<Course> getCoursesFromIds(List<Long> courseIds) {
-//        List<Course> courses = new ArrayList<>();
-//        for (Long id : courseIds) {
-//            Course course = courseRepository.findById(id).orElse(null);
-//            if (Objects.nonNull(course)) {
-//                courses.add(course);
-//            }
-//        }
-//        return courses;
-//    }
-//
-//    private StudentResponse createStudentResponse(Student student) {
-//        StudentResponse studentResponse = new StudentResponse();
-//        studentResponse.setId(student.getId());
-//        studentResponse.setNameStudent(student.getName());
-//        List<String> courseNames = new ArrayList<>();
-//        for (Course course : student.getCourseList()) {
-//            courseNames.add(course.getNameCourse());
-//        }
-//        studentResponse.setNameCourses(courseNames);
-//        return studentResponse;
-//    }
-//
-//    @Override
-//    public StudentResponse create(StudentRequest studentRequest) {
-//        Student student = createStudentFromRequest(studentRequest);
-//        List<Course> courses = getCoursesFromIds(studentRequest.getCourseIds());
-//        student.setCourseList(courses);
-//        studentRepository.save(student);
-//        return createStudentResponse(student);
-//    }
+import com.example.Subject.dao.CourseDao;
+import com.example.Subject.dao.StudentDao;
+import com.example.Subject.dao.impl.CourseDaoImpl;
+import com.example.Subject.dao.impl.StudentDaoImpl;
+import com.example.Subject.dto.request.StudentRequest;
+import com.example.Subject.dto.response.StudentResponse;
+import com.example.Subject.entity.Course;
+import com.example.Subject.entity.Student;
+
+
+
+import com.example.Subject.service.StudentService;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Service
+public class StudentServiceImpl implements StudentService {
+    private final StudentDao studentDao = new StudentDaoImpl();
+    private final CourseDao courseDao = new CourseDaoImpl();
+
+
+    private Student createStudentFromRequest(StudentRequest studentRequest) {
+        Student student = new Student();
+        student.setName(studentRequest.getName());
+        student.setPhoneNumber(studentRequest.getPhoneNumber());
+        student.setAddress(studentRequest.getAddress());
+        return studentRepository.save(student);
+    }
+
+    private List<Course> getCoursesFromIds(List<Long> courseIds) {
+        List<Course> courses = new ArrayList<>();
+        for (Long id : courseIds) {
+            Course course = courseRepository.findById(id).orElse(null);
+            if (Objects.nonNull(course)) {
+                courses.add(course);
+            }
+        }
+        return courses;
+    }
+
+    private StudentResponse createStudentResponse(Student student) {
+        StudentResponse studentResponse = new StudentResponse();
+        studentResponse.setId(student.getId());
+        studentResponse.setNameStudent(student.getName());
+        List<String> courseNames = new ArrayList<>();
+        for (Course course : student.getCourseList()) {
+            courseNames.add(course.getNameCourse());
+        }
+        studentResponse.setNameCourses(courseNames);
+        return studentResponse;
+    }
+
+    @Override
+    public StudentResponse create(StudentRequest studentRequest) {
+        Student student = createStudentFromRequest(studentRequest);
+        List<Course> courses = getCoursesFromIds(studentRequest.getCourseIds());
+        student.setCourseList(courses);
+        studentRepository.save(student);
+        return createStudentResponse(student);
+    }
 //
 //    @Override
 //    public List<StudentResponse> getAll() {

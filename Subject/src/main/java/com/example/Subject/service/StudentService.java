@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface StudentService {
 
-//    StudentResponse create(StudentRequest studentRequest);
+    StudentResponse create(StudentRequest studentRequest);
 //
 //    List<StudentResponse> getAll();
 //
