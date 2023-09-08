@@ -78,6 +78,8 @@ public class StudentDaoImpl implements StudentDao {
                 student.setPhoneNumber(resultSet.getString("phoneNumber"));
                 student.setAddress(resultSet.getString("address"));
             }
+            List<Course> courseList = new ArrayList<>();
+
         } catch (SQLException e) {
             if (connection != null) {
                 try {
