@@ -10,7 +10,7 @@ import java.util.List;
 public class Course {
     private int id;
     private String nameCourse;
-//  private List<Student> studentList;
+    private List<Student> studentList;
 
 
 }

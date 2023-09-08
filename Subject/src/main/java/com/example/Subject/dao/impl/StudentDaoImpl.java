@@ -2,6 +2,7 @@ package com.example.Subject.dao.impl;
 
 import com.example.Subject.dao.HikariConfiguration;
 import com.example.Subject.dao.StudentDao;
+import com.example.Subject.entity.Course;
 import com.example.Subject.entity.Student;
 
 import java.sql.Connection;
@@ -14,13 +15,13 @@ import java.util.Objects;
 
 public class StudentDaoImpl implements StudentDao {
     @Override
-    public Student create(int id, String name, String phoneNumber, String address) {
+    public Student create(int id, String name, String phoneNumber, String address, List<Integer> courseIds) {
         Student student = new Student();
         Connection connection = null;
         //Biến này sẽ được sử dụng để lưu trữ một kết nối đến cơ sở dữ liệu
         PreparedStatement ps = null;
         //Biến này sẽ được sử dụng để chuẩn bị và thực hiện một truy vấn SQL
-
+        List<Course> courseList = new ArrayList<>();
         try {
             connection = HikariConfiguration.getInstance().getConnection();
             ps = connection.prepareStatement("INSERT INTO students (id, name, phoneNumber, address) VALUES(?, ?, ?, ?)");
@@ -29,23 +30,30 @@ public class StudentDaoImpl implements StudentDao {
             ps.setString(3, phoneNumber);
             ps.setString(4, address);
             int row = ps.executeUpdate();
-            connection.commit();
+
             System.out.println("row affected: " + row);
+            PreparedStatement pst = connection.prepareStatement("INSERT INTO student_course (student_id, course_id) VALUES(?,?)");
+            for (int idc : courseIds) {
+                pst.setInt(1, id);
+                pst.setInt(2, idc);
+                pst.executeUpdate();
+            }
+            connection.commit();
         } catch (SQLException e) {
-            if(connection != null) {
+            if (connection != null) {
                 try {
                     connection.rollback();
                 } catch (SQLException ex) {
-                    throw  new RuntimeException(ex);
+                    throw new RuntimeException(ex);
                 }
             }
             e.printStackTrace();
         } finally {
-            if(Objects.nonNull(connection)) {
+            if (Objects.nonNull(connection)) {
                 try {
                     connection.close();
                     ps.close();
-                } catch (SQLException e){
+                } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -71,21 +79,21 @@ public class StudentDaoImpl implements StudentDao {
                 student.setAddress(resultSet.getString("address"));
             }
         } catch (SQLException e) {
-            if(connection != null) {
+            if (connection != null) {
                 try {
                     connection.rollback();
                 } catch (SQLException ex) {
-                    throw  new RuntimeException(ex);
+                    throw new RuntimeException(ex);
                 }
             }
             e.printStackTrace();
         } finally {
-            if(Objects.nonNull(connection)) {
+            if (Objects.nonNull(connection)) {
                 try {
                     connection.close();
                     pts.close();
                     resultSet.close();
-                } catch (SQLException e){
+                } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -99,20 +107,25 @@ public class StudentDaoImpl implements StudentDao {
         Connection connection = null;
         PreparedStatement pts = null;
         ResultSet resultSet = null;
-        try{
+        try {
             connection = HikariConfiguration.getInstance().getConnection();
             pts = connection.prepareStatement("SELECT * FROM students");
             resultSet = pts.executeQuery();
             while (resultSet.next()) {
-                if(resultSet.next()) {
-
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String name = resultSet.getString("name");
+                    String phoneNumber = resultSet.getString("phoneNumber");
+                    String address = resultSet.getString("address");
+                    Student student = new Student();
                 }
             }
         } catch (SQLException e) {
 
         } finally {
 
-        }
-        return null;
+        } return null;
     }
+
+
 }
