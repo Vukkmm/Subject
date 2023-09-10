@@ -11,4 +11,6 @@ public interface StudentDao {
     Student findById(int id);
 
     List<Student> getListStudent();
+
+    void deleteStudent(int id);
 }

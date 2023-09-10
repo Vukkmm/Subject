@@ -82,9 +82,8 @@ public class StudentDaoImpl implements StudentDao {
                 student.setName(resultSet.getString("name"));
                 student.setPhoneNumber(resultSet.getString("phoneNumber"));
                 student.setAddress(resultSet.getString("address"));
+                student.setCourseId(resultSet.getInt("courseId"));
             }
-            List<Course> courseList = new ArrayList<>();
-
         } catch (SQLException e) {
             if (connection != null) {
                 try {
@@ -119,20 +118,63 @@ public class StudentDaoImpl implements StudentDao {
             pts = connection.prepareStatement("SELECT * FROM students");
             resultSet = pts.executeQuery();
             while (resultSet.next()) {
-                if (resultSet.next()) {
-                    int id = resultSet.getInt("id");
-                    String name = resultSet.getString("name");
-                    String phoneNumber = resultSet.getString("phoneNumber");
-                    String address = resultSet.getString("address");
-                    Student student = new Student();
-                }
+                Student student = new Student();
+                student.setId(resultSet.getInt("id"));
+                student.setName(resultSet.getString("name"));
+                student.setPhoneNumber(resultSet.getString("phoneNumber"));
+                student.setAddress(resultSet.getString("address"));
+                student.setCourseId(resultSet.getInt("courseId"));
+                studentList.add(student);
             }
         } catch (SQLException e) {
-
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            e.printStackTrace();
         } finally {
-
+            if (Objects.nonNull(connection)) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
-        return null;
+        return studentList;
+    }
+
+    @Override
+    public void deleteStudent(int id) {
+        Connection connection = null;
+        try {
+            connection = HikariConfiguration.getInstance().getConnection();
+            PreparedStatement pst = connection.prepareStatement("DELETE FROM students WHERE id = ?");
+            pst.setInt(1, id);
+            int row = pst.executeUpdate();
+            connection.commit();
+            System.out.println("Row affected: " + row);
+        } catch (SQLException e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            e.printStackTrace();
+        } finally {
+            if (Objects.nonNull(connection)) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 
 

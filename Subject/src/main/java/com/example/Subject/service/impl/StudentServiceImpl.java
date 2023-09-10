@@ -8,9 +8,12 @@ import com.example.Subject.dao.impl.StudentDaoImpl;
 import com.example.Subject.dto.request.StudentRequest;
 import com.example.Subject.dto.response.StudentResponse;
 import com.example.Subject.entity.Course;
+import com.example.Subject.entity.Student;
 import com.example.Subject.service.StudentService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -31,29 +34,32 @@ public class StudentServiceImpl implements StudentService {
         studentResponse.setNameStudent(studentRequest.getName());
         return studentResponse;
     }
-//
-//    @Override
-//    public List<StudentResponse> getAll() {
-//        List<Student> studentList = studentRepository.findAll();
-//        //StudentResponse studentResponse = new StudentResponse();
-//        List<StudentResponse> studentResponses = new ArrayList<>();
-//        for (Student student : studentList) {
-//            StudentResponse studentResponse = createStudentResponse(student);
-//            studentResponses.add(studentResponse);
-//        }
-//        return studentResponses;
-//    }
-//
-//    @Override
-//    public Boolean delete(long id) {
-//        Student student = studentRepository.findById(id).orElse(null);
-//        if (Objects.nonNull(student)) {
-//            studentRepository.deleteStudent(id);
-//            studentRepository.delete(student);
-//            return true;
-//        }
-//        return false;
-//    }
+
+    @Override
+    public List<StudentResponse> getAll() {
+        List<Student> studentList = studentDao.getListStudent();
+        StudentResponse studentResponse = new StudentResponse();
+        List<StudentResponse> studentResponses = new ArrayList<>();
+        for (Student student : studentList) {
+            studentResponse.setNameStudent(student.getName());
+            Course course =  courseDao.findById(student.getCourseId());
+            if(Objects.nonNull(course)){
+                studentResponse.setNameCourses(course.getNameCourse());
+            }
+            studentResponses.add(studentResponse);
+        }
+        return studentResponses;
+    }
+
+    @Override
+    public Boolean deleteStudent(int id) {
+        Student student = studentDao.findById(id);
+        if (Objects.nonNull(student)) {
+            courseDao.deleteCourse(id);
+            return true;
+        }
+        return false;
+    }
 //
 //    @Override
 //    public StudentResponse update(long id, StudentRequest studentRequest) {

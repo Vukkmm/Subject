@@ -10,11 +10,11 @@ import java.util.List;
 public interface StudentService {
 
     StudentResponse create(StudentRequest studentRequest);
-//
-//    List<StudentResponse> getAll();
-//
-//
-//    Boolean delete(long id);
+
+    List<StudentResponse> getAll();
+
+
+    Boolean deleteStudent(int id);
 //
 //    StudentResponse update(long id, StudentRequest studentRequest);
 
