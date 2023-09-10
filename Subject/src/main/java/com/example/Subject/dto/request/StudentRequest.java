@@ -10,8 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentRequest {
+    private int id;
     private String name;
     private String phoneNumber;
     private String address;
-    private List<Long> courseIds;
+    private int courseId;
 }

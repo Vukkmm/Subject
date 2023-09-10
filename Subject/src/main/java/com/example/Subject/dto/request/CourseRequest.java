@@ -11,6 +11,6 @@ import java.util.List;
 
 @AllArgsConstructor
 public class CourseRequest {
+    private int id;
     private String nameCourse;
-    private List<Long> studentIds;
 }

@@ -14,30 +14,36 @@ import java.util.List;
 import java.util.Objects;
 
 public class StudentDaoImpl implements StudentDao {
+
     @Override
-    public Student create(int id, String name, String phoneNumber, String address, List<Integer> courseIds) {
+    public void createStudent(int id, String name, String phoneNumber, String address, int courseId) {
         Student student = new Student();
         Connection connection = null;
         //Biến này sẽ được sử dụng để lưu trữ một kết nối đến cơ sở dữ liệu
         PreparedStatement ps = null;
         //Biến này sẽ được sử dụng để chuẩn bị và thực hiện một truy vấn SQL
-        List<Course> courseList = new ArrayList<>();
         try {
             connection = HikariConfiguration.getInstance().getConnection();
-            ps = connection.prepareStatement("INSERT INTO students (id, name, phoneNumber, address) VALUES(?, ?, ?, ?)");
+            PreparedStatement checkCourse = connection.prepareStatement("SELECT COUNT(*) FROM courses WHERE id = ?");
+            checkCourse.setInt(1, courseId);
+            ResultSet rs = checkCourse.executeQuery();
+            rs.next();
+            int counts = rs.getInt(1);
+            rs.close();
+            checkCourse.close();
+            if (counts == 0) {
+                System.out.println("Course ID " + courseId + " không tồn tại");
+                connection.rollback();
+            }
+            ps = connection.prepareStatement("INSERT INTO students (id, name, phoneNumber, address, courseId) VALUES(?, ?, ?, ?, ?)");
             ps.setInt(1, id);
             ps.setString(2, name);
             ps.setString(3, phoneNumber);
             ps.setString(4, address);
+            ps.setInt(5, courseId);
             int row = ps.executeUpdate();
-
             System.out.println("row affected: " + row);
-            PreparedStatement pst = connection.prepareStatement("INSERT INTO student_course (student_id, course_id) VALUES(?,?)");
-            for (int idc : courseIds) {
-                pst.setInt(1, id);
-                pst.setInt(2, idc);
-                pst.executeUpdate();
-            }
+
             connection.commit();
         } catch (SQLException e) {
             if (connection != null) {
@@ -58,7 +64,6 @@ public class StudentDaoImpl implements StudentDao {
                 }
             }
         }
-        return student;
     }
 
     @Override
@@ -126,7 +131,8 @@ public class StudentDaoImpl implements StudentDao {
 
         } finally {
 
-        } return null;
+        }
+        return null;
     }
 
 

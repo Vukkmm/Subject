@@ -11,9 +11,9 @@ public interface CourseService {
 
     List<CourseResponse> getAll();
 
-   Boolean delete(long id);
+    Boolean delete(int id);
 
-    CourseResponse update(long id, CourseRequest courseRequest);
+    CourseResponse update(int id, CourseRequest courseRequest);
 
 //    CourseResponse studentSameSubject(long id);
 
