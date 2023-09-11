@@ -16,11 +16,12 @@ import java.util.Objects;
 public class CourseDaoImpl implements CourseDao {
 
     @Override
-    public void createCourse(int id, String name) {
+    public void create(int id, String name) {
         Connection connection = null;
         PreparedStatement ps = null;
         try {
             connection = HikariConfiguration.getInstance().getConnection();
+            connection.setAutoCommit(false);
             ps = connection.prepareStatement("INSERT INTO courses (id, nameCourse) VALUES(?, ?)");
             ps.setInt(1, id);
             ps.setString(2, name);
@@ -56,6 +57,7 @@ public class CourseDaoImpl implements CourseDao {
         ResultSet resultSet = null;
         try {
             connection = HikariConfiguration.getInstance().getConnection();
+            connection.setAutoCommit(false);
             pst = connection.prepareStatement("select * from courses where id = ?");
             pst.setInt(1, id);
             resultSet = pst.executeQuery();
@@ -93,6 +95,7 @@ public class CourseDaoImpl implements CourseDao {
         Connection connection = null;
         try {
             connection = HikariConfiguration.getInstance().getConnection();
+            connection.setAutoCommit(false);
             PreparedStatement pst = connection.prepareStatement("SELECT * FROM courses");
             ResultSet resultSet = pst.executeQuery();
             while (resultSet.next()) {
@@ -123,10 +126,11 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public void deleteCourse(int id) {
+    public void delete(int id) {
         Connection connection = null;
         try {
             connection = HikariConfiguration.getInstance().getConnection();
+            connection.setAutoCommit(false);
             PreparedStatement pst = connection.prepareStatement("DELETE FROM courses WHERE id = ?");
             pst.setInt(1, id);
             int row = pst.executeUpdate();
@@ -153,10 +157,11 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public void updateCourse(int id, String name) {
+    public void update(int id, String name) {
         Connection connection = null;
         try {
             connection = HikariConfiguration.getInstance().getConnection();
+            connection.setAutoCommit(false);
             PreparedStatement pst = connection.prepareStatement("UPDATE courses SET nameCourse = ? WHERE id = ?");
             pst.setInt(1, id);
             pst.setString(2, name);

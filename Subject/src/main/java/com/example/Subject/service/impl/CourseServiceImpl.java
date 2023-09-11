@@ -5,7 +5,6 @@ import com.example.Subject.dao.CourseDao;
 import com.example.Subject.dao.impl.CourseDaoImpl;
 import com.example.Subject.dto.request.CourseRequest;
 import com.example.Subject.dto.response.CourseResponse;
-import com.example.Subject.dto.response.StudentInfoResponse;
 import com.example.Subject.entity.Course;
 import com.example.Subject.service.CourseService;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseResponse create(CourseRequest courseRequest) {
         CourseResponse courseResponse = new CourseResponse();
-        courseDao.createCourse(courseRequest.getId(), courseRequest.getNameCourse());
+        courseDao.create(courseRequest.getId(), courseRequest.getNameCourse());
         courseResponse.setCourseName(courseRequest.getNameCourse());
         return courseResponse;
     }
@@ -42,7 +41,7 @@ public class CourseServiceImpl implements CourseService {
     public Boolean delete(int id) {
         Course course = courseDao.findById(id);
         if (Objects.nonNull(course)) {
-            courseDao.deleteCourse(id);
+            courseDao.delete(id);
             return true;
         }
         return false;
@@ -52,9 +51,9 @@ public class CourseServiceImpl implements CourseService {
     public CourseResponse update( int id, CourseRequest courseRequest) {
         Course course = courseDao.findById(id);
         if (Objects.nonNull(course)) {
-            courseDao.deleteCourse(id);
+            courseDao.delete(id);
             CourseResponse courseResponse = new CourseResponse();
-            courseDao.createCourse(courseRequest.getId(), courseRequest.getNameCourse());
+            courseDao.create(courseRequest.getId(), courseRequest.getNameCourse());
             courseResponse.setCourseName(courseRequest.getNameCourse());
             return courseResponse;
         }

@@ -16,14 +16,14 @@ import java.util.Objects;
 public class StudentDaoImpl implements StudentDao {
 
     @Override
-    public void createStudent(int id, String name, String phoneNumber, String address, int courseId) {
-        Student student = new Student();
+    public void create(int id, String name, String phoneNumber, String address, int courseId) {
         Connection connection = null;
         //Biến này sẽ được sử dụng để lưu trữ một kết nối đến cơ sở dữ liệu
         PreparedStatement ps = null;
         //Biến này sẽ được sử dụng để chuẩn bị và thực hiện một truy vấn SQL
         try {
             connection = HikariConfiguration.getInstance().getConnection();
+            connection.setAutoCommit(false);
             PreparedStatement checkCourse = connection.prepareStatement("SELECT COUNT(*) FROM courses WHERE id = ?");
             checkCourse.setInt(1, courseId);
             ResultSet rs = checkCourse.executeQuery();
@@ -74,6 +74,7 @@ public class StudentDaoImpl implements StudentDao {
         ResultSet resultSet = null;
         try {
             connection = HikariConfiguration.getInstance().getConnection();
+            connection.setAutoCommit(false);
             pts = connection.prepareStatement("select * from students where id = ?");
             pts.setInt(1, id);
             resultSet = pts.executeQuery();
@@ -115,6 +116,7 @@ public class StudentDaoImpl implements StudentDao {
         ResultSet resultSet = null;
         try {
             connection = HikariConfiguration.getInstance().getConnection();
+            connection.setAutoCommit(false);
             pts = connection.prepareStatement("SELECT * FROM students");
             resultSet = pts.executeQuery();
             while (resultSet.next()) {
@@ -148,7 +150,7 @@ public class StudentDaoImpl implements StudentDao {
     }
 
     @Override
-    public void deleteStudent(int id) {
+    public void delete(int id) {
         Connection connection = null;
         try {
             connection = HikariConfiguration.getInstance().getConnection();

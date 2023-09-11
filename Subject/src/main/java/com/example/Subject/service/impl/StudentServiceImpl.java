@@ -24,7 +24,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentResponse create(StudentRequest studentRequest) {
         StudentResponse studentResponse = new StudentResponse();
-        studentDao.createStudent(studentRequest.getId(), studentRequest.getName(), studentRequest.getPhoneNumber(), studentRequest.getAddress(), studentRequest.getCourseId());
+        studentDao.create(studentRequest.getId(), studentRequest.getName(), studentRequest.getPhoneNumber(), studentRequest.getAddress(), studentRequest.getCourseId());
         Course course = courseDao.findById(studentRequest.getId());
         if(Objects.nonNull(course)) {
             studentResponse.setNameCourses(course.getNameCourse());
@@ -52,10 +52,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Boolean deleteStudent(int id) {
+    public Boolean delete(int id) {
         Student student = studentDao.findById(id);
         if (Objects.nonNull(student)) {
-            courseDao.deleteCourse(id);
+            courseDao.delete(id);
             return true;
         }
         return false;

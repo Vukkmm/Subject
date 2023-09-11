@@ -14,8 +14,8 @@ public interface StudentService {
     List<StudentResponse> getAll();
 
 
-    Boolean deleteStudent(int id);
-//
+    Boolean delete(int id);
+
 //    StudentResponse update(long id, StudentRequest studentRequest);
 
 //    List<StudentResponse> findSearchByName(String name);
